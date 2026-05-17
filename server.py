@@ -1,11 +1,16 @@
+"""Flask web application for Emotion Detection using Watson NLP."""
+
 from flask import Flask, render_template, request
 from EmotionDetection import emotion_detector
 
-app = Flask(__name__)
+app = Flask("Emotion Detector")
+
 
 @app.route("/emotionDetector")
-def send_detector():
+def sent_detector():
+    """REST endpoint for emotion detection."""
     text_to_analyse = request.args.get('textToAnalyze', '')
+
     result = emotion_detector(text_to_analyse)
 
     if result['dominant_emotion'] is None:
@@ -19,9 +24,13 @@ def send_detector():
         f"<b>{result['dominant_emotion']}</b>."
     )
 
+
 @app.route("/")
 def render_index_page():
+    """Render the main index page."""
     return render_template('index.html')
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+    
